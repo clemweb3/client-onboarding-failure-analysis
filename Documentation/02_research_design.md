@@ -1,58 +1,55 @@
-# Research Design & Data Synthesis Framework
-**Modeling Onboarding Friction in B2B AI Ecosystems**
-
-## 1. Study Scope & Objectives
-This study adopts a **Process-Oriented Exploratory** approach. We aim to model the relationship between internal enablement structures and external client activation metrics.
-
-* **Primary Objective:** Quantify the "Invisible Tax" of poor documentation and undefined ownership.
-* **Success Metric:** A synthetic dataset that demonstrates statistically significant friction patterns consistent with industry "Founder-Led" bottlenecks.
+# 02: Research Design & Synthetic Logic
+**Modeling High-Entropy Onboarding in B2B AI Ecosystems**
 
 ---
 
-## 2. Variable Taxonomy & Data Dictionary
-Each observation represents a **Unique Onboarding Lifecycle**.
+## 1. Study Objective
+This study adopts a **Fuzzy-Inference-Modeling** approach to quantify "Operational Debt" in early-stage startup onboarding. We aim to move beyond binary "Success/Failure" metrics to understand the **Gradient of Friction** created by poor documentation and undefined ownership.
 
-### A. Contextual Predictors (Independent)
-| Variable | Type | Strategic Significance |
-| :--- | :--- | :--- |
-| `client_tech_literacy` | Categorical | Dictates the "Support Floor." Low literacy requires higher asset density. |
-| `onboarding_owner_assigned` | Boolean | Measures accountability. If False, `founder_involvement` probability increases. |
-| `ssot_enabled` | Boolean | Represents the presence of a Single Source of Truth for project tracking. |
+## 2. The Fuzzy Variable Taxonomy
+To simulate realistic human behavior, we represent client and process traits as **Membership Functions (0.0 to 1.0)** rather than static categories.
 
-### B. Enablement Artifacts (Intervention)
-| Variable | Type | Strategic Significance |
+### A. Inputs (The Predictors)
+| Variable | Range | Definition |
 | :--- | :--- | :--- |
-| `doc_asset_depth` | Integer (0-3) | Count of artifacts (Guides, Videos, FAQs) provided to the client. |
-| `scope_lock_early` | Boolean | Whether technical constraints were negotiated in the first 14 days. |
+| `client_tech_literacy` | `[0, 1]` | **Fuzzy Set:** {Novice, Competent, Expert}. Dictates the "Support Floor." |
+| `asset_depth` | `[0, 1]` | **Fuzzy Set:** {Sparse, Standard, Comprehensive}. Measures documentation/SSOT availability. |
+| `ownership_clarity` | `[0, 1]` | **Fuzzy Set:** {Ambiguous, Defined}. Probability of founder interference vs. process autonomy. |
 
-### C. Friction & Activation Metrics (Outcome)
-| Variable | Type | Strategic Significance |
+### B. Outputs (The Activation Metrics)
+| Variable | Range | Strategic Significance |
 | :--- | :--- | :--- |
-| `repeat_query_rate` | Float | Proxy for information decay. High rate indicates "Verbal-Only" failure. |
-| `ttfv_days` | Integer | Time-to-First-Value. The ultimate metric for onboarding efficiency. |
-| `cx_satisfaction` | Float (1-5) | Client sentiment, modeled as a function of friction vs. value. |
+| `repeat_query_rate` | `[0, 1]` | Proxy for **Information Decay**. High entropy = wasted internal bandwidth. |
+| `ttfv_days` | `[10, 90]` | **Time-to-First-Value**. The ultimate lagging indicator of onboarding health. |
+| `cx_satisfaction` | `[1, 5]` | Weighted sentiment score based on "Perceived Value" vs. "Effort Expended." |
 
 ---
 
-## 3. Stochastic Generation Logic (The "Mental Model")
-To ensure the data is "Interview-Proof," the generation engine follows these behavioral laws:
+## 3. The "Fuzzy" Rule Base (Inference Logic)
+The Data Engine (`01_data_engine.ipynb`) enforces the following behavioral laws to ensure the dataset is "Intelligent":
 
-### Law 1: The Literacy-Documentation Interaction
-Friction is not linear. A "High Tech" client can survive poor documentation. A "Low Tech" client cannot.
-* **Logic:** `repeat_query_rate` is weighted by `(1 / tech_literacy) * (1 / doc_asset_depth)`.
+### Law 1: The Literacy-Asset Interaction
+Friction is non-linear. Expert clients can "self-correct" in the absence of documentation; novices hit a total bottleneck.
+* **Rule:** IF `tech_literacy` is **Novice** AND `asset_depth` is **Sparse**, THEN `repeat_query_rate` is **Extreme**.
 
-### Law 2: The Founder Scalability Gap
-Founder involvement (high-cost resource) should correlate with *undefined* ownership.
-* **Logic:** `P(founder_involved | owner_assigned=False) = 0.85`.
+### Law 2: The Founder Scaling Trap
+Founder involvement provides high-quality help but creates a single-point-of-failure and discourages process autonomy.
+* **Rule:** IF `ownership_clarity` is **Ambiguous**, THEN `founder_involvement` is **High** AND `ttfv_days` increases due to bottlenecking.
 
 ### Law 3: The "Scope Creep" Penalty
-Failure to "Scope Lock" early leads to mid-project pivots.
-* **Logic:** If `scope_lock_early` is False, `ttfv_days` receives a +30% penalty and `cx_satisfaction` drops.
+"Scope Elasticity" (failing to lock constraints early) looks fast in week 1 but leads to "Death Spirals" in week 4.
+* **Rule:** IF `scope_lock_early` is **False**, THEN `ttfv_days` receives a **Stochastic Multiplier (1.3x - 1.5x)**.
 
 ---
 
 ## 4. Validation & Reproducibility
-The dataset is validated against **three "Business Truths"**:
-1.  **Ownership Check:** Defined owners must result in lower founder hours.
-2.  **Asset Check:** Increased `doc_asset_depth` must show a downward trend in `repeat_query_rate`.
-3.  **Activation Check:** `ttfv_days` should show higher variance in "Low Structure" environments.
+The resulting 1,000-row dataset (`onboarding_data_v2.csv`) is validated against three **Hypotheses**:
+
+1. **The Resilience Hypothesis:** `asset_depth` has a significantly higher impact on `ttfv_days` for "Low Literacy" clients than for "Expert" clients.
+2. **The Efficiency Hypothesis:** Defined `ownership_clarity` reduces `founder_involvement` without negatively impacting `cx_satisfaction`.
+3. **The Activation Hypothesis:** High `repeat_query_rate` (Information Decay) is a stronger predictor of onboarding delays than initial client team size.
+
+---
+
+## 5. Intended Use
+This research design serves as the **Technical Specification** for the Data Synthesis Engine. By encoding these human-centric rules into the data generation process, the resulting analysis reflects the complex trade-offs found in real-world B2B AI deployments.
