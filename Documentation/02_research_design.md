@@ -1,55 +1,55 @@
 # 02: Research Design & Synthetic Logic
-**Modeling High-Entropy Onboarding in B2B AI Ecosystems**
+**Analytical Framework for B2B AI Onboarding Optimization**
 
 ---
 
 ## 1. Study Objective
-This study adopts a **Fuzzy-Inference-Modeling** approach to quantify "Operational Debt" in early-stage startup onboarding. We aim to move beyond binary "Success/Failure" metrics to understand the **Gradient of Friction** created by poor documentation and undefined ownership.
+This study uses a **Fuzzy-Inference-Model** to quantify the impact of operational variables on client activation. The goal is to move beyond binary outcomes to identify the specific gradients of friction caused by documentation gaps and undefined ownership structures.
 
-## 2. The Fuzzy Variable Taxonomy
-To simulate realistic human behavior, we represent client and process traits as **Membership Functions (0.0 to 1.0)** rather than static categories.
+## 2. Variable Taxonomy
+Data is generated as **Membership Functions (0.0 to 1.0)** to simulate non-linear human behavior and professional competency levels.
 
-### A. Inputs (The Predictors)
-| Variable | Range | Definition |
+### A. Predictor Variables (Inputs)
+| Variable | Range | Statistical Definition |
 | :--- | :--- | :--- |
-| `client_tech_literacy` | `[0, 1]` | **Fuzzy Set:** {Novice, Competent, Expert}. Dictates the "Support Floor." |
-| `asset_depth` | `[0, 1]` | **Fuzzy Set:** {Sparse, Standard, Comprehensive}. Measures documentation/SSOT availability. |
-| `ownership_clarity` | `[0, 1]` | **Fuzzy Set:** {Ambiguous, Defined}. Probability of founder interference vs. process autonomy. |
+| `client_tech_literacy` | `[0, 1]` | Cumulative distribution of client technical proficiency. |
+| `asset_depth` | `[0, 1]` | Quantified availability of asynchronous enablement artifacts (SSOT). |
+| `ownership_clarity` | `[0, 1]` | Probability of process-driven vs. personality-driven execution. |
 
-### B. Outputs (The Activation Metrics)
-| Variable | Range | Strategic Significance |
+### B. Outcome Metrics (KPIs)
+| Variable | Range | Operational Significance |
 | :--- | :--- | :--- |
-| `repeat_query_rate` | `[0, 1]` | Proxy for **Information Decay**. High entropy = wasted internal bandwidth. |
-| `ttfv_days` | `[10, 90]` | **Time-to-First-Value**. The ultimate lagging indicator of onboarding health. |
-| `cx_satisfaction` | `[1, 5]` | Weighted sentiment score based on "Perceived Value" vs. "Effort Expended." |
+| `repeat_query_rate` | `[0, 1]` | Metric for information retention and communication efficiency. |
+| `ttfv_days` | `[10, 90]` | Time-to-First-Value. Primary indicator of onboarding velocity. |
+| `cx_satisfaction` | `[1, 5]` | Composite score of perceived value relative to effort. |
 
 ---
 
-## 3. The "Fuzzy" Rule Base (Inference Logic)
-The Data Engine (`01_data_engine.ipynb`) enforces the following behavioral laws to ensure the dataset is "Intelligent":
+## 3. Inference Logic & Interaction Effects
+The Data Engine (`01_data_engine.ipynb`) enforces specific conditional logic to ensure the dataset reflects realistic operational constraints:
 
-### Law 1: The Literacy-Asset Interaction
-Friction is non-linear. Expert clients can "self-correct" in the absence of documentation; novices hit a total bottleneck.
-* **Rule:** IF `tech_literacy` is **Novice** AND `asset_depth` is **Sparse**, THEN `repeat_query_rate` is **Extreme**.
+### Logic 1: Literacy-Asset Interaction
+The relationship between documentation and query rates is non-linear.
+* **Mechanism:** As `client_tech_literacy` decreases, the sensitivity to `asset_depth` increases. High-literacy clients maintain lower query rates even in low-asset environments due to self-correction capabilities.
 
-### Law 2: The Founder Scaling Trap
-Founder involvement provides high-quality help but creates a single-point-of-failure and discourages process autonomy.
-* **Rule:** IF `ownership_clarity` is **Ambiguous**, THEN `founder_involvement` is **High** AND `ttfv_days` increases due to bottlenecking.
+### Logic 2: Resource Allocation & Bottlenecking
+Founder involvement is modeled as a response to low `ownership_clarity`.
+* **Mechanism:** In the absence of a defined owner, the probability of founder intervention increases to 0.85, introducing a single-point-of-failure that increases `ttfv_days`.
 
-### Law 3: The "Scope Creep" Penalty
-"Scope Elasticity" (failing to lock constraints early) looks fast in week 1 but leads to "Death Spirals" in week 4.
-* **Rule:** IF `scope_lock_early` is **False**, THEN `ttfv_days` receives a **Stochastic Multiplier (1.3x - 1.5x)**.
-
----
-
-## 4. Validation & Reproducibility
-The resulting 1,000-row dataset (`onboarding_data_v2.csv`) is validated against three **Hypotheses**:
-
-1. **The Resilience Hypothesis:** `asset_depth` has a significantly higher impact on `ttfv_days` for "Low Literacy" clients than for "Expert" clients.
-2. **The Efficiency Hypothesis:** Defined `ownership_clarity` reduces `founder_involvement` without negatively impacting `cx_satisfaction`.
-3. **The Activation Hypothesis:** High `repeat_query_rate` (Information Decay) is a stronger predictor of onboarding delays than initial client team size.
+### Logic 3: Technical Constraint Negotiation (Scope Lock)
+The impact of early vs. late scope definition on project timelines.
+* **Mechanism:** Failure to lock scope within the first 14 days applies a stochastic multiplier (1.3x to 1.5x) to `ttfv_days` to simulate mid-project refactoring.
 
 ---
 
-## 5. Intended Use
-This research design serves as the **Technical Specification** for the Data Synthesis Engine. By encoding these human-centric rules into the data generation process, the resulting analysis reflects the complex trade-offs found in real-world B2B AI deployments.
+## 4. Validation Hypotheses
+The 1,000-row dataset (`onboarding_data_v2.csv`) is generated to test three specific hypotheses:
+
+1. **Resilience Variance:** `asset_depth` accounts for a higher percentage of variance in `ttfv_days` for low-literacy segments than for expert segments.
+2. **Accountability Scaling:** Increasing `ownership_clarity` reduces `founder_involved` frequency without degrading `cx_satisfaction`.
+3. **Communication Entropy:** `repeat_query_rate` serves as a leading indicator for onboarding delays and lower long-term satisfaction.
+
+---
+
+## 5. Technical Implementation Note
+This design serves as the technical specification for the Python-based data synthesis. It ensures the resulting analysis is grounded in conditional probabilities and interaction terms rather than independent random variables.
