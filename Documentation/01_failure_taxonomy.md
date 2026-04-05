@@ -33,3 +33,13 @@ This document categorizes recurring failure modes observed in the transition fro
 * **Pattern:** Technical limitations are introduced late in the cycle; clients assume infinite feature flexibility.
 * **The Scaling Failure:** Mid-onboarding "pivots" lead to developer burnout and broken delivery timelines.
 * **Metric Impact:** High `scope_changes_post_onboarding` frequency.
+
+## Epistemological Scope: Simulation vs. Discovery
+This repository does not claim to discover new empirical truths from raw market data. Instead, it functions as a **Composite Simulation Study**. 
+
+**What this study claims:**
+* It quantifies the **sensitivity** of operational outcomes (TTFV, Satisfaction) to specific parameter changes (Ownership, Asset Depth).
+* It uses a **theoretically-grounded generative model** to simulate "The Founder-Led Trap" common in B2B AI startups.
+* The "Statistical Audit" is an internal validation step to ensure the generative engine accurately reflects the intended systemic behaviors before prescriptive analysis begins.
+
+*Note: This is a composite case study based on observed patterns across early-stage B2B AI implementations.*
