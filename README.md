@@ -6,7 +6,7 @@ This repository presents a data-driven analysis of **onboarding friction points*
 
 This project synthesizes a complex operational dataset to model these failures, validates the "hidden costs" of poor documentation, and proposes a framework for sustainable, enablement-focused client activation.
 
----s
+---
 
 ## The Problem: The Founder-Led Bottleneck
 In the transition from "MVP" to "Scale," startups often face a specific class of operational debt:
