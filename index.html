@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Onboarding Friction Simulator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&family=Radley:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,6 +27,7 @@
     --purple-hi:#9b6fd4;
     --mono: 'DM Mono', monospace;
     --serif: 'Instrument Serif', serif;
+    --heading-font: 'Radley', serif;
   }
 
   body {
@@ -60,10 +61,9 @@
   }
 
   .header h1 {
-    font-family: var(--serif);
-    font-size: 28px;
+    font-family: var(--heading-font);
+    font-size: 32px;
     font-weight: 400;
-    font-style: italic;
     color: var(--text);
     line-height: 1.2;
     margin-bottom: 10px;
@@ -409,7 +409,6 @@
 
   <div class="grid">
 
-    <!-- Controls -->
     <div class="panel">
       <div class="controls-label">Intervention Levers</div>
 
@@ -455,10 +454,8 @@
       <div class="sens-note">Stress-test the bandwidth reclamation figure across different time-cost assumptions (range: 1–12 hrs per founder intervention).</div>
     </div>
 
-    <!-- Output -->
     <div class="panel output">
 
-      <!-- KPI gauges -->
       <div class="kpi-section">
         <div class="kpi-section-label">Projected KPIs</div>
 
@@ -487,7 +484,6 @@
         </div>
       </div>
 
-      <!-- Bandwidth -->
       <div class="bandwidth-section">
         <div class="kpi-section-label">Founder Bandwidth Impact — Portfolio of 1,000 Clients</div>
         <div class="bw-grid">
@@ -514,7 +510,6 @@
         </div>
       </div>
 
-      <!-- Scenario comparison -->
       <div class="scenario-section">
         <div class="kpi-section-label">Intervention Scenario Comparison</div>
         <table class="scenario-table">
@@ -531,7 +526,6 @@
         </table>
       </div>
 
-      <!-- Sensitivity table -->
       <div class="sens-section">
         <div class="kpi-section-label">Reclamation Robustness — Hours / Intervention Assumption</div>
         <table class="sens-table">
@@ -551,7 +545,7 @@
 
   <div class="footnote">
     Simulator math mirrors <code>01_data_engine.ipynb</code> exactly — Poisson noise replaced by its expected value (5 days) for deterministic projection. Founder involvement probability derived from Audit 1 logistic regression (coef = −5.9931, p &lt; 0.0001). Baseline anchored to empirical founder involvement rate from simulation data (24.5%). &nbsp;·&nbsp;
-    <a href="#">View full case study on GitHub →</a>
+    <a href="https://github.com/clemweb3/client-onboarding-failure-analysis" target="_blank">View full case study on GitHub →</a>
   </div>
 
 </div>
@@ -569,7 +563,7 @@
   function project(clarity, assets, literacy, hrs) {
     const logOdds    = LOGIT_INTERCEPT + LOGIT_COEF * clarity;
     const founderProb = 1 / (1 + Math.exp(-logOdds));
-    const rqr        = clamp((1 - literacy) * (1 - assets), 0, 1);
+    const rqr         = clamp((1 - literacy) * (1 - assets), 0, 1);
     const ttfv       = 20 + (1 - literacy) * 20 + (1 - assets) * 25 + founderProb * 10 + POISSON_MEAN;
     const sat        = clamp(5 - rqr * 3 - ttfv / 60, 1, 5);
     const baseHrs    = BASELINE_FOUNDER_RATE * N_CLIENTS * hrs;
