@@ -1,47 +1,65 @@
-# Strategic Onboarding Optimization: A B2B AI Case Study
-**Balancing Technical Rigor with Operational Management**
+# B2B AI Onboarding Optimization: A Simulation Case Study
 
-## Executive Summary
-This repository presents a data-driven analysis of **onboarding friction points** within high-touch B2B AI startups. In early-stage environments, onboarding often suffers from the "Founder-Led Trap"— a reliance on tribal knowledge and verbal syncs that fails to scale.
+### Overview
 
-This project synthesizes a complex operational dataset to model these failures, validates the "hidden costs" of poor documentation, and proposes a framework for sustainable, enablement-focused client activation.
+This repository models onboarding failure patterns in early-stage B2B AI startups using a theoretically grounded generative simulation. The goal is to move beyond anecdotal observation and quantify how specific operational variables — ownership clarity, documentation coverage, and scope governance — drive activation delays and client satisfaction outcomes.
 
----
-
-## The Problem: The Founder-Led Bottleneck
-In the transition from "MVP" to "Scale," startups often face a specific class of operational debt:
-* **Information Asymmetry:** Onboarding knowledge resides with founders/early hires rather than structured assets.
-* **The Shadow Support Tax:** High volumes of repeat inquiries due to a lack of a Single Source of Truth (SSOT).
-* **Technical Friction:** Non-technical stakeholders struggling with AI-product complexities without guided pathways.
+This is a composite case study based on observed patterns across early-stage B2B AI implementations. It does not claim empirical discovery. It quantifies the sensitivity of operational outcomes to parameter changes under a defined generative model.
 
 ---
 
-## Project Objectives
-1. **Model Operational Risk:** Use synthetic data to simulate how "low-structure" onboarding impacts Time-to-First-Value (TTFV).
-2. **Statistical Validation:** Move beyond anecdotes to prove the correlation between documentation assets and client satisfaction.
-3. **Strategic Framework:** Propose a scalable "Enablement Pipeline" that balances technical depth with managerial oversight.
+### The Problem
+
+Early-stage startups frequently encounter a specific class of onboarding failure during the transition from early sales to repeatable delivery:
+
+- **Undefined ownership:** Onboarding execution depends on individual availability rather than process, causing inconsistent Time-to-First-Value (TTFV) across clients.
+- **Verbal-only knowledge transfer:** Critical configuration steps and technical constraints are communicated in meetings but never documented, leading to high repeat inquiry rates.
+- **Sparse documentation:** Clients without a centralized reference point generate disproportionate support load, particularly those with lower technical proficiency.
+- **Late scope definition:** Technical constraints introduced after onboarding begins apply a measurable delay multiplier to activation timelines.
 
 ---
 
-## Technical Stack & Methodology
-* **Synthesis:** Data generated using NumPy/SciPy to simulate stochastic human behavior (Poisson distributions for inquiries, Exponential for delays).
-* **Validation:** Automated data-integrity checks to ensure reproducibility.
-* **Analysis:** Exploratory Data Analysis (EDA) focused on interaction effects between client technical literacy and support structure.
+### Objectives
+
+1. Synthesize a simulation dataset that encodes the conditional relationships between operational inputs and client activation outcomes.
+2. Validate that the generative model accurately reflects the intended systemic behaviors through inferential testing.
+3. Identify the client segments most exposed to activation risk and quantify the marginal impact of each intervention.
+4. Produce a prescriptive brief with an interactive sensitivity tool that projects outcome changes under different operational scenarios.
 
 ---
 
-## Repository Structure
-* `📂 documentation/`: Taxonomy of failure points and research design.
-* `📂 notebooks/`: 
-    * `01_data_engine.ipynb`: Canonical data synthesis logic.
-    * `02_statistical_audit.ipynb`: Hypothesis testing and assumption validation.
-    * `03_exploratory_analysis.ipynb`: Identifying high-friction client segments.
-    * `04_strategic_brief.ipynb`: Executive summary and solution roadmap.
-* `📂 data/`: Version-controlled synthetic datasets.
+### Methodology
+
+**Data synthesis:** 1,000 client observations generated using truncated normal distributions (NumPy/SciPy) to represent continuous operational variables as membership functions. Key variables: `ownership_clarity`, `asset_depth`, `tech_literacy`, `scope_lock_day`.
+
+**Generative logic:** Conditional interaction rules encode realistic dependencies — ownership clarity drives founder involvement probability via exponential decay; asset depth and literacy interact multiplicatively to determine repeat query rate; late scope lock (day > 14) applies a stochastic 1.3–1.5× multiplier to TTFV.
+
+**Statistical audit:** Logistic regression (Audit 1), OLS with interaction term (Audit 2), and Pearson correlation (Audit 3) verify that model outputs match theoretical expectations before prescriptive analysis begins.
+
+**Segmentation and simulation:** Clients are classified into four segments by literacy and ownership clarity. Counterfactual scenarios project the bandwidth and satisfaction impact of moving each lever to its recommended target.
 
 ---
 
-## Getting Started
-1. Clone the repository: `git clone [URL]`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run `notebooks/01_data_engine.ipynb` to generate the canonical dataset.
+### Repository Structure
+```
+documentation/
+01_failure_taxonomy.md       — Categorization of observed failure modes
+02_research_design.md        — Variable definitions, inference logic, hypotheses
+notebooks/
+01_data_engine.ipynb         — Generative model and dataset synthesis
+02_statistical_audit.ipynb   — Inferential validation (Logit, OLS, Pearson r)
+03_exploratory_analysis.ipynb — Segment classification and intervention sizing
+04_strategic_brief.ipynb     — Prescriptive output with interactive simulator
+data/
+onboarding_data_v2.csv       — Version-controlled synthetic dataset
+```
+---
+
+### Getting Started
+```bash
+git clone [URL]
+pip install -r requirements.txt
+```
+
+Run `notebooks/01_data_engine.ipynb` first to generate the canonical dataset, then proceed through notebooks in order.
+s
