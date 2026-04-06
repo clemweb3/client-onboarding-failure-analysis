@@ -17,7 +17,7 @@ This document categorizes recurring failure modes observed in the transition fro
 **Definition:** Persistent reliance on synchronous, verbal knowledge transfer without durable asynchronous artifacts.
 
 * **Pattern:** Critical technical constraints and configuration steps are discussed in meetings but never codified.
-* **The Scaling Failure:** Information decays immediately after a call. Clients suffer from memory leak leading to repetitive support cycles.
+* **The Scaling Failure:** Information decays immediately after a call. Clients suffer from support cost overrun or gross margin erosion leading to repetitive support cycles.
 * **Metric Impact:** Increased `repeat_questions_count` and reduced Client Satisfaction (CSAT).
 
 ## Risk Factor 3: Asset Scarcity & Self-Service Friction
