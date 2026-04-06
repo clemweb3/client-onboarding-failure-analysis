@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding Friction Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0e0e0e;
+    --surface:  #161616;
+    --border:   #2a2a2a;
+    --border2:  #333;
+    --text:     #e8e4dc;
+    --muted:    #6b6760;
+    --accent:   #c8b89a;
+    --red:      #c0392b;
+    --orange:   #b8621a;
+    --green:    #2d6a4f;
+    --purple:   #5b3f7a;
+    --red-hi:   #e05540;
+    --orange-hi:#e07830;
+    --green-hi: #3aaa78;
+    --purple-hi:#9b6fd4;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Instrument Serif', serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 12px;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── Main grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .panel {
+    background: var(--surface);
+    padding: 24px;
+  }
+
+  /* ── Controls ── */
+  .controls-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .lever {
+    margin-bottom: 22px;
+  }
+
+  .lever-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .lever-name {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .lever-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .lever-desc {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 1px;
+    background: var(--border2);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover {
+    background: var(--text);
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .sens-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .sens-note {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ── Output panel ── */
+  .output {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .kpi-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-section-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 80px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .kpi-row:last-child { margin-bottom: 0; }
+
+  .kpi-name {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .kpi-bar-track {
+    height: 3px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: visible;
+    position: relative;
+  }
+
+  .kpi-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .kpi-val {
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  /* ── Bandwidth section ── */
+  .bandwidth-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .bw-cell {
+    padding: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .bw-cell-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .bw-cell-value {
+    font-size: 20px;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+
+  .bw-cell-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .reclaimed-positive { color: var(--green-hi); }
+  .reclaimed-negative { color: var(--red-hi); }
+
+  /* ── Sensitivity table ── */
+  .sens-section {
+    padding: 20px 24px;
+  }
+
+  .sens-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+
+  .sens-table th {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  .sens-table th:not(:first-child) { text-align: right; }
+
+  .sens-table td {
+    padding: 8px 0;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .sens-table td:not(:first-child) { text-align: right; }
+
+  .sens-table tr.active-row td {
+    color: var(--text);
+  }
+
+  .sens-table tr.active-row td:first-child::after {
+    content: ' ◀';
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  /* ── Footer note ── */
+  .footnote {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .footnote a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .footnote a:hover { border-color: var(--accent); }
+
+  /* ── Scenario comparison ── */
+  .scenario-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scenario-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+
+  .scenario-table th {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0 8px 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  .scenario-table th:not(:first-child) { text-align: right; }
+
+  .scenario-table td {
+    padding: 9px 8px 9px 0;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: middle;
+  }
+
+  .scenario-table td:not(:first-child) { text-align: right; }
+
+  .scenario-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 7px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .scenario-table tr.best-row td { color: var(--green-hi); }
+  .scenario-table tr.current-row td { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    .bw-grid { grid-template-columns: 1fr 1fr; }
+    .kpi-row { grid-template-columns: 120px 1fr 70px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="header-label">Case Study — Interactive Supplement</div>
+    <h1>Onboarding Friction Simulator</h1>
+    <p>Adjust the three operational levers to project how changes in ownership clarity, documentation coverage, and client technical proficiency propagate to activation speed, support volume, and satisfaction outcomes. All projections use the closed-form generative model from the case study.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- Controls -->
+    <div class="panel">
+      <div class="controls-label">Intervention Levers</div>
+
+      <div class="lever">
+        <div class="lever-header">
+          <span class="lever-name">Ownership Clarity</span>
+          <span class="lever-value" id="val-clarity">0.40</span>
+        </div>
+        <div class="lever-desc">Process-driven vs. personality-driven execution</div>
+        <input type="range" id="sl-clarity" min="0" max="1" step="0.01" value="0.40">
+      </div>
+
+      <div class="lever">
+        <div class="lever-header">
+          <span class="lever-name">Asset Depth</span>
+          <span class="lever-value" id="val-assets">0.40</span>
+        </div>
+        <div class="lever-desc">Coverage of async documentation and configuration guides</div>
+        <input type="range" id="sl-assets" min="0" max="1" step="0.01" value="0.40">
+      </div>
+
+      <div class="lever">
+        <div class="lever-header">
+          <span class="lever-name">Client Tech Literacy</span>
+          <span class="lever-value" id="val-literacy">0.50</span>
+        </div>
+        <div class="lever-desc">Client technical proficiency at onboarding intake</div>
+        <input type="range" id="sl-literacy" min="0" max="1" step="0.01" value="0.50">
+      </div>
+
+      <hr class="divider">
+
+      <div class="sens-label">Sensitivity Parameter</div>
+
+      <div class="lever">
+        <div class="lever-header">
+          <span class="lever-name">Hours / Intervention</span>
+          <span class="lever-value" id="val-hours">5</span>
+        </div>
+        <input type="range" id="sl-hours" min="1" max="12" step="1" value="5">
+      </div>
+
+      <div class="sens-note">Stress-test the bandwidth reclamation figure across different time-cost assumptions (range: 1–12 hrs per founder intervention).</div>
+    </div>
+
+    <!-- Output -->
+    <div class="panel output">
+
+      <!-- KPI gauges -->
+      <div class="kpi-section">
+        <div class="kpi-section-label">Projected KPIs</div>
+
+        <div class="kpi-row">
+          <div class="kpi-name">Time to First Value</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" id="bar-ttfv" style="background:var(--red-hi)"></div></div>
+          <div class="kpi-val" id="kv-ttfv" style="color:var(--red-hi)">—</div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-name">Repeat Query Rate</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" id="bar-rqr" style="background:var(--orange-hi)"></div></div>
+          <div class="kpi-val" id="kv-rqr" style="color:var(--orange-hi)">—</div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-name">CX Satisfaction</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" id="bar-sat" style="background:var(--green-hi)"></div></div>
+          <div class="kpi-val" id="kv-sat" style="color:var(--green-hi)">—</div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-name">Founder Involvement</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" id="bar-fp" style="background:var(--purple-hi)"></div></div>
+          <div class="kpi-val" id="kv-fp" style="color:var(--purple-hi)">—</div>
+        </div>
+      </div>
+
+      <!-- Bandwidth -->
+      <div class="bandwidth-section">
+        <div class="kpi-section-label">Founder Bandwidth Impact — Portfolio of 1,000 Clients</div>
+        <div class="bw-grid">
+          <div class="bw-cell">
+            <div class="bw-cell-label">Baseline Hours</div>
+            <div class="bw-cell-value" id="bw-base">—</div>
+            <div class="bw-cell-sub">observed founder involvement rate</div>
+          </div>
+          <div class="bw-cell">
+            <div class="bw-cell-label">Projected Hours</div>
+            <div class="bw-cell-value" id="bw-proj">—</div>
+            <div class="bw-cell-sub">at current lever settings</div>
+          </div>
+          <div class="bw-cell">
+            <div class="bw-cell-label">Reclaimed Hours</div>
+            <div class="bw-cell-value" id="bw-reclaim">—</div>
+            <div class="bw-cell-sub" id="bw-reclaim-sub">vs. observed baseline</div>
+          </div>
+          <div class="bw-cell">
+            <div class="bw-cell-label">Reduction</div>
+            <div class="bw-cell-value" id="bw-pct">—</div>
+            <div class="bw-cell-sub">of executive onboarding load</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario comparison -->
+      <div class="scenario-section">
+        <div class="kpi-section-label">Intervention Scenario Comparison</div>
+        <table class="scenario-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>TTFV</th>
+              <th>Δ TTFV</th>
+              <th>CSAT</th>
+              <th>Founder %</th>
+            </tr>
+          </thead>
+          <tbody id="scenario-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Sensitivity table -->
+      <div class="sens-section">
+        <div class="kpi-section-label">Reclamation Robustness — Hours / Intervention Assumption</div>
+        <table class="sens-table">
+          <thead>
+            <tr>
+              <th>Hrs / Event</th>
+              <th>Reclaimed Hrs</th>
+              <th>% Reduction</th>
+            </tr>
+          </thead>
+          <tbody id="sens-tbody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footnote">
+    Simulator math mirrors <code>01_data_engine.ipynb</code> exactly — Poisson noise replaced by its expected value (5 days) for deterministic projection. Founder involvement probability derived from Audit 1 logistic regression (coef = −5.9931, p &lt; 0.0001). Baseline anchored to empirical founder involvement rate from simulation data (24.5%). &nbsp;·&nbsp;
+    <a href="#">View full case study on GitHub →</a>
+  </div>
+
+</div>
+
+<script>
+  // ── Model constants (mirror 01_data_engine.ipynb exactly) ──────────────────
+  const LOGIT_COEF      = -5.9931;
+  const LOGIT_INTERCEPT =  5.9931 * 0.5;
+  const POISSON_MEAN    =  5;
+  const N_CLIENTS       =  1000;
+  const BASELINE_FOUNDER_RATE = 0.245; // empirical mean from simulation data
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function project(clarity, assets, literacy, hrs) {
+    const logOdds    = LOGIT_INTERCEPT + LOGIT_COEF * clarity;
+    const founderProb = 1 / (1 + Math.exp(-logOdds));
+    const rqr        = clamp((1 - literacy) * (1 - assets), 0, 1);
+    const ttfv       = 20 + (1 - literacy) * 20 + (1 - assets) * 25 + founderProb * 10 + POISSON_MEAN;
+    const sat        = clamp(5 - rqr * 3 - ttfv / 60, 1, 5);
+    const baseHrs    = BASELINE_FOUNDER_RATE * N_CLIENTS * hrs;
+    const projHrs    = founderProb * N_CLIENTS * hrs;
+    const reclaimed  = baseHrs - projHrs;
+    const recPct     = baseHrs > 0 ? (reclaimed / baseHrs) * 100 : 0;
+    return { founderProb, rqr, ttfv, sat, baseHrs, projHrs, reclaimed, recPct };
+  }
+
+  // ── Scenario definitions ────────────────────────────────────────────────────
+  const SCENARIOS = [
+    { label: 'Baseline',              clarity: 0.40, assets: 0.40, color: '#6b6760' },
+    { label: 'Fix Ownership only',    clarity: 0.70, assets: 0.40, color: '#3498db' },
+    { label: 'Fix Asset Depth only',  clarity: 0.40, assets: 0.70, color: '#e07830' },
+    { label: 'Fix Both',              clarity: 0.70, assets: 0.70, color: '#3aaa78' },
+  ];
+  const MEDIAN_LITERACY = 0.50;
+
+  // ── DOM refs ────────────────────────────────────────────────────────────────
+  const slClarity  = document.getElementById('sl-clarity');
+  const slAssets   = document.getElementById('sl-assets');
+  const slLiteracy = document.getElementById('sl-literacy');
+  const slHours    = document.getElementById('sl-hours');
+
+  function fmt2(v) { return v.toFixed(2); }
+  function fmt1(v) { return v.toFixed(1); }
+
+  function setBar(id, pct) {
+    document.getElementById(id).style.width = clamp(pct, 0, 1) * 100 + '%';
+  }
+
+  function render() {
+    const clarity  = parseFloat(slClarity.value);
+    const assets   = parseFloat(slAssets.value);
+    const literacy = parseFloat(slLiteracy.value);
+    const hrs      = parseInt(slHours.value);
+
+    document.getElementById('val-clarity').textContent  = fmt2(clarity);
+    document.getElementById('val-assets').textContent   = fmt2(assets);
+    document.getElementById('val-literacy').textContent = fmt2(literacy);
+    document.getElementById('val-hours').textContent    = hrs;
+
+    const p = project(clarity, assets, literacy, hrs);
+
+    // KPI bars — invert for "bad" metrics (lower = better)
+    const ttfvPct = 1 - clamp((p.ttfv - 20) / 70, 0, 1);
+    const rqrPct  = 1 - clamp(p.rqr, 0, 1);
+    const satPct  = clamp((p.sat - 1) / 4, 0, 1);
+    const fpPct   = 1 - clamp(p.founderProb, 0, 1);
+
+    setBar('bar-ttfv', ttfvPct);
+    setBar('bar-rqr',  rqrPct);
+    setBar('bar-sat',  satPct);
+    setBar('bar-fp',   fpPct);
+
+    document.getElementById('kv-ttfv').textContent = fmt1(p.ttfv) + 'd';
+    document.getElementById('kv-rqr').textContent  = fmt2(p.rqr);
+    document.getElementById('kv-sat').textContent  = fmt2(p.sat);
+    document.getElementById('kv-fp').textContent   = (p.founderProb * 100).toFixed(1) + '%';
+
+    // Bandwidth
+    const sign = p.reclaimed >= 0 ? '+' : '';
+    document.getElementById('bw-base').textContent   = Math.round(p.baseHrs).toLocaleString() + ' hrs';
+    document.getElementById('bw-proj').textContent   = Math.round(p.projHrs).toLocaleString() + ' hrs';
+    document.getElementById('bw-reclaim').textContent = sign + Math.round(p.reclaimed).toLocaleString() + ' hrs';
+    document.getElementById('bw-pct').textContent    = sign + fmt1(p.recPct) + '%';
+
+    const rEl = document.getElementById('bw-reclaim');
+    const pEl = document.getElementById('bw-pct');
+    rEl.className = 'bw-cell-value ' + (p.reclaimed >= 0 ? 'reclaimed-positive' : 'reclaimed-negative');
+    pEl.className = 'bw-cell-value ' + (p.recPct >= 0 ? 'reclaimed-positive' : 'reclaimed-negative');
+
+    // Scenario table
+    const baseP = project(0.40, 0.40, MEDIAN_LITERACY, hrs);
+    const tbody = document.getElementById('scenario-tbody');
+    tbody.innerHTML = '';
+    SCENARIOS.forEach(sc => {
+      const sp = project(sc.clarity, sc.assets, MEDIAN_LITERACY, hrs);
+      const delta = sp.ttfv - baseP.ttfv;
+      const deltaStr = (delta > 0 ? '+' : '') + fmt1(delta) + 'd';
+      const isBest = sc.label === 'Fix Both';
+      const tr = document.createElement('tr');
+      if (isBest) tr.className = 'best-row';
+      tr.innerHTML = `
+        <td><span class="scenario-dot" style="background:${sc.color}"></span>${sc.label}</td>
+        <td>${fmt1(sp.ttfv)}d</td>
+        <td>${deltaStr}</td>
+        <td>${fmt2(sp.sat)}</td>
+        <td>${(sp.founderProb * 100).toFixed(1)}%</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Sensitivity table
+    const stbody = document.getElementById('sens-tbody');
+    stbody.innerHTML = '';
+    [2, 5, 8, 12].forEach(h => {
+      const sp = project(clarity, assets, literacy, h);
+      const sign2 = sp.reclaimed >= 0 ? '+' : '';
+      const tr = document.createElement('tr');
+      if (h === hrs) tr.className = 'active-row';
+      tr.innerHTML = `
+        <td>${h} hrs</td>
+        <td>${sign2}${Math.round(sp.reclaimed).toLocaleString()}</td>
+        <td>${sign2}${fmt1(sp.recPct)}%</td>
+      `;
+      stbody.appendChild(tr);
+    });
+  }
+
+  [slClarity, slAssets, slLiteracy, slHours].forEach(s => s.addEventListener('input', render));
+  render();
+</script>
+</body>
+</html>
